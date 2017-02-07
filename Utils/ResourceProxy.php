@@ -7,6 +7,7 @@ class ResourceProxy
     private $allResources;
     private $currentResource;
     private $sessionHelper;
+    private $entityType;
 
     public function __construct(
         \Botamp\Botamp\ApiResource\Contact $contact,
@@ -14,9 +15,9 @@ class ResourceProxy
         \Botamp\Botamp\ApiResource\OrderEntity $orderEntity,
         \Botamp\Botamp\ApiResource\ProductEntity $productEntity,
         \Botamp\Botamp\ApiResource\Subscription $subscription,
+        \Botamp\Botamp\ApiResource\EntityType $entityType,
         \Botamp\Botamp\Helper\SessionHelper $sessionHelper
     ) {
-
         $this->allResources = [
             'contact' => $contact,
             'me' => $me,
@@ -24,7 +25,7 @@ class ResourceProxy
             'product_entity' => $productEntity,
             'subscription' => $subscription
         ];
-
+        $this->entityType = $entityType;
         $this->sessionHelper = $sessionHelper;
     }
 
@@ -35,8 +36,13 @@ class ResourceProxy
 
     public function __call($method, $arguments)
     {
-        $backendSession = $this->sessionHelper->getSessionObject('backend');
+        if($this->currentResource == $this->allResources['order_entity'])
+        {
+            if(!$this->entityType->created())
+                $this->entityType->createOrUpdate();
+        }
 
+        $backendSession = $this->sessionHelper->getSessionObject('backend');
         $backendSession->setBotampAuthStatus('ok');
         try {
             // @codingStandardsIgnoreStart

@@ -18,6 +18,8 @@
                   <label>Enable order notifications</label>
                   <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="entity_type_created" type="hidden" sortOrder="1" showInDefault="0" showInWebsite="0" showInStore="0">
+                </field>
             </group>
         </section>
     </system>
