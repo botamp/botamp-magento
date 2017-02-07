@@ -3,22 +3,11 @@ namespace Botamp\Botamp\ApiResource;
 
 class EntityType extends AbstractApiResource
 {
-    private $magentoOrderStatuses = [];
     private $configHelper;
 
     public function __construct(\Botamp\Botamp\Helper\ConfigHelper $configHelper)
     {
         parent::__construct($configHelper);
-        $this->magentoOrderStatuses = [
-            'processing',
-            'pending_payment',
-            'payment_review',
-            'new',
-            'holded',
-            'complete',
-            'closed',
-            'canceled'
-        ];
         $this->configHelper = $configHelper;
     }
 
@@ -40,15 +29,15 @@ class EntityType extends AbstractApiResource
             'name' => 'order',
             'singular_label' => 'Order',
             'plural_label' => 'Orders',
-            'statuses' => $this->magentoOrderStatuses
+            'platform' => 'magento'
         ]);
     }
 
     private function update($entityType)
     {
         $entityTypeAttributes = $entityType->getBody()['data']['attributes'];
-        if ($entityTypeAttributes['statuses'] !== $this->magentoOrderStatuses) {
-            $entityTypeAttributes['statuses'] = $this->magentoOrderStatuses;
+        if ($entityTypeAttributes['platform'] !== 'magento') {
+            $entityTypeAttributes['platform'] = 'magento';
             $entityTypeId = $entityType->getBody()['data']['id'];
 
             $this->botamp->entityTypes->update($entityTypeId, $entityTypeAttributes);
