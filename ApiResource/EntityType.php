@@ -27,7 +27,7 @@ class EntityType extends AbstractApiResource
         try {
             $entityType = $this->botamp->entityTypes->get('order');
             $this->update($entityType);
-        } catch(\Botamp\Exceptions\NotFound $e) {
+        } catch (\Botamp\Exceptions\NotFound $e) {
             $this->create();
         }
 
@@ -47,8 +47,7 @@ class EntityType extends AbstractApiResource
     private function update($entityType)
     {
         $entityTypeAttributes = $entityType->getBody()['data']['attributes'];
-        if($entityTypeAttributes['statuses'] !== $this->magentoOrderStatuses)
-        {
+        if ($entityTypeAttributes['statuses'] !== $this->magentoOrderStatuses) {
             $entityTypeAttributes['statuses'] = $this->magentoOrderStatuses;
             $entityTypeId = $entityType->getBody()['data']['id'];
 
@@ -56,7 +55,8 @@ class EntityType extends AbstractApiResource
         }
     }
 
-    public function created() {
+    public function created()
+    {
         return $this->configHelper->entityTypeCreated();
     }
 }

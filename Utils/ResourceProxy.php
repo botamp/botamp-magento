@@ -36,10 +36,10 @@ class ResourceProxy
 
     public function __call($method, $arguments)
     {
-        if($this->currentResource == $this->allResources['order_entity'])
-        {
-            if(!$this->entityType->created())
+        if ($this->currentResource == $this->allResources['order_entity']) {
+            if (!$this->entityType->created()) {
                 $this->entityType->createOrUpdate();
+            }
         }
 
         $backendSession = $this->sessionHelper->getSessionObject('backend');
